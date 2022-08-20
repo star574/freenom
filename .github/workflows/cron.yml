@@ -12,5 +12,13 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v3
-      - name: run code
-        run: git clone https://github.com/star574/freenom.git && cd freenom && chmod +x ./run.sh && ./run.sh
+      - name: download env
+        run: wget https://raw.githubusercontent.com/star574/freenom/main/.env.example && cp .env.example .env
+      - name: user
+        run: echo -e "FREENOM_PASSWORD='${{secrets.PASSWORD}}'\nFREENOM_USERNAME='${{secrets.USERNAME}}'" >> .env  
+      - name: docker run 
+        run: docker run -d --name freenom  -v $(pwd):/conf -v $(pwd)/logs:/app/logs luolongfei/freenom
+      - name: wait
+        run: sleep 10s
+      - name: log
+        run: docker logs freenom
