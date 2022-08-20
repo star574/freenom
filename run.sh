@@ -3,4 +3,5 @@ cp .env.example .env
 echo -e "FREENOM_PASSWORD='${{secrets.PASSWORD}}'\nFREENOM_USERNAME='${{secrets.USERNAME}}'" >> .env  
 cat .env
 docker run -d --name freenom  -v $(pwd):/conf -v $(pwd)/logs:/app/logs luolongfei/freenom
+sleep 10s
 docker logs freenom
